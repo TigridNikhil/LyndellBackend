@@ -14,7 +14,7 @@ const SignUp = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
         // Create a new user with the hashed password
         const newUser = await User.create({ email, password: hashedPassword });
-        res.json({ message: 'Signup successful', user: newUser });
+        res.json({ message: 'Signup Successful', user: newUser });
     } catch (error) {
         console.error('Error during signup:', error);
         res.status(500).json({ error: 'An error occurred' });
