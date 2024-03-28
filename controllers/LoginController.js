@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const SignUp = async (req, res) => {
     const { email, password } = req.query;
-      try {
+    try {
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
             return res.status(400).json({ error: 'User already exists' });
@@ -27,12 +27,12 @@ const Login = async (req, res) => {
     const { email, password } = req.query;
     try {
         const CheckUser = await User.findOne({ where: { email: email.toLowerCase() } });
- 
+
         if (CheckUser) {
             const isPasswordValid = await bcrypt.compare(password, CheckUser.dataValues.password);
             if (isPasswordValid) {
                 // Generate JWT token
-                const token = jwt.sign({ email: CheckUser.dataValues.email }, 'your_secret_key', { expiresIn: '1h' });
+                const token = jwt.sign({ email: CheckUser.dataValues.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 res.json({ message: 'Login successful', token });
             } else {
                 res.status(401).json({ error: 'Invalid credentials' });
